@@ -35,3 +35,61 @@ join province_names pn on p.province_id = pn.province_id
 select count(year(birth_date)) as total_patients
 from patients 
 where year( birth_date) = 2010
+
+--Show the first_name, last_name, and height of the patient with the greatest height.
+select first_name,last_name,height
+from patients 
+where height =(
+  select max(height)
+  from patients
+  )
+
+--Show all columns for patients who have one of the following patient_ids:
+1,45,534,879,1000
+select *
+from patients 
+where patient_id in (1,45,534,879,1000) 
+
+--Show the total number of admissions
+select count(patient_id)
+from admissions
+
+--Show all the columns from admissions where the patient was admitted and discharged on the same day.
+select *
+from admissions 
+where admission_date = discharge_date
+
+--Show the patient id and the total number of admissions for patient_id 579.
+SELECT
+  patient_id,
+  COUNT(*) AS total_admissions
+FROM admissions
+WHERE patient_id = 579;
+
+--Based on the cities that our patients live in, show unique cities that are in province_id 'NS'.
+select distinct(city) as unique_cities
+from patients
+where province_id = 'NS'
+
+--Write a query to find the first_name, last name and birth date of patients who has height greater than 160 and weight greater than 70
+SELECT first_name, last_name, birth_date 
+FROM patients
+WHERE height > 160 AND weight > 70;
+
+-- Write a query to find list of patients first_name, last_name, and allergies where allergies are not null and are from the city of 'Hamilton'
+select first_name,last_name,allergies
+from patients
+where allergies is not null and city is 'Hamilton'
+
+--Show unique birth years from patients and order them by ascending.
+select year(birth_date) as birth_year
+from patients
+group by birth_year
+
+--Show unique first names from the patients table which only occurs once in the list.
+--For example, if two or more people are named 'John' in the first_name column then don't include their name in the output list.
+--If only 1 person is named 'Leo' then include them in the output.
+select distinct first_name
+from patients
+group by first_name
+having count(first_name) = 1
